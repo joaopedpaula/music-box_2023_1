@@ -1,7 +1,8 @@
+import Musicas from "./pages/Musicas";
 
 function App() {
   return (
-    <h1>OLÁ, MUNDO!</h1>
+    <Musicas />
   );
 }
 
