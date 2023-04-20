@@ -1,6 +1,5 @@
 import editIcon from "../assets/imagens/edit-icon.png"
 import deleteIcon from "../assets/imagens/delete-icon.png"
-import { useState } from "react";
 
 function CardMusica(props) {
 
