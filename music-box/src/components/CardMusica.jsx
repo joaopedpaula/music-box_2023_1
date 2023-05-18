@@ -4,7 +4,14 @@ import imgCapaPadrao from "../assets/imagens/capa.png" // importando recurso de 
 
 import { useState } from "react";
 
+import api from "../api";
+
 function CardMusica(props) {
+
+  const [inputTitulo, setInputTitulo] = useState(props.musica.titulo); // inicia o estado com o valor de "props.musica.titulo"
+  const [inputArtista, setInputArtista] = useState(props.musica.artista); // inicia o estado com o valor de "props.musica.artista"
+  const [inputGenero, setInputGenero] = useState(props.musica.genero); // inicia o estado com o valor de "props.musica.genero"
+  const [inputAno, setInputAno] = useState(props.musica.ano); // inicia o estado com o valor de "props.musica.ano"
 
   const [estaEditando, setEstaEditando] = useState(false); // estado para verificar se o usuário está editando o card de música
 
@@ -29,6 +36,30 @@ function CardMusica(props) {
     })`
   }
 
+  function atualizarMusica() {
+    console.log(inputTitulo);
+    console.log(inputArtista);
+    console.log(inputGenero);
+    console.log(inputAno);
+
+    // objeto que será o corpo da requisição
+    const novaMusica = {
+      titulo: inputTitulo,
+      artista: inputArtista,
+      genero: inputGenero,
+      ano: inputAno
+    }
+
+    const id = props.musica.id;
+
+    api
+      .put(`/musicas/${id}`, novaMusica)
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err))
+
+    setEstaEditando(false);
+  }
+
   return (
     <div style={estilo} className="card-music"> {/* aplicando estilização com a const "estilo" para alterar imagem de fundo */}
       <div className="icons">
@@ -40,6 +71,7 @@ function CardMusica(props) {
         <p>
           <strong className="card-title">música: </strong>
           <input
+            onChange={(e) =>  setInputTitulo(e.target.value)} // atualiza o estado pegando o valor da input ao digitar
             disabled={estaEditando === false} // desabilitado se o modo de edição estiver como "false" 
             className={estaEditando ? 'input-music-enable' : 'input-music-disabled'} // desabilitado se o modo de edição estiver como "false"
             type="text"
@@ -49,6 +81,7 @@ function CardMusica(props) {
         <p>
           <strong className="card-title">artista: </strong>
           <input
+            onChange={(e) =>  setInputArtista(e.target.value)} // atualiza o estado pegando o valor da input ao digitar
             disabled={estaEditando === false} // desabilitado se o modo de edição estiver como "false"
             className={estaEditando ? 'input-music-enable' : 'input-music-disabled'} // desabilitado se o modo de edição estiver como "false"
             type="text"
@@ -58,6 +91,7 @@ function CardMusica(props) {
         <p>
           <strong className="card-title">gênero: </strong>
           <input
+            onChange={(e) =>  setInputGenero(e.target.value)} // atualiza o estado pegando o valor da input ao digitar
             disabled={estaEditando === false} // desabilitado se o modo de edição estiver como "false"
             className={estaEditando ? 'input-music-enable' : 'input-music-disabled'} // desabilitado se o modo de edição estiver como "false"
             type="text"
@@ -67,6 +101,7 @@ function CardMusica(props) {
         <p>
           <strong className="card-title">ano: </strong>
           <input
+            onChange={(e) =>  setInputAno(e.target.value)} // atualiza o estado pegando o valor da input ao digitar
             disabled={estaEditando === false} // desabilitado se o modo de edição estiver como "false"
             className={estaEditando ? 'input-music-enable' : 'input-music-disabled'} // desabilitado se o modo de edição estiver como "false"
             type="text"
@@ -74,7 +109,10 @@ function CardMusica(props) {
           />
         </p>
         {/* ao clicar no botão, altera o estado "estaEditando" para false */}
-        <button onClick={() => setEstaEditando(false)} className={estaEditando ? 'btn-salvar-enable' : 'btn-salvar-disabled'}>
+        <button 
+          onClick={() => atualizarMusica()} 
+          className={estaEditando ? 'btn-salvar-enable' : 'btn-salvar-disabled'}
+        >
           Salvar
         </button>
       </div>
